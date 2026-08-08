@@ -75,7 +75,11 @@ jobs:
             rm -rf "$APP_DIR/new"
             rm -f /tmp/silaigo-api.tar.gz
 
-            pm2 restart silaigo-api
+            if pm2 describe silaigo-api > /dev/null 2>&1; then
+              pm2 restart silaigo-api --update-env
+            else
+              pm2 start dist/main.js --name silaigo-api
+            fi
 
             pm2 save
 
