@@ -1,0 +1,11 @@
+export declare enum RoleCode {
+    ADMIN = "ADMIN",
+    MARKETING = "MARKETING",
+    SALES = "SALES",
+    SUPPORT = "SUPPORT",
+    TAILOR = "TAILOR",
+    CONTENT = "CONTENT",
+    PICKUP_COORDINATOR = "PICKUP_COORDINATOR",
+    CUTTING = "CUTTING",
+    STITCHING = "STITCHING"
+}

@@ -1,0 +1,10 @@
+const httpCodes = {
+  OKREQUEST: 200,
+  BADREQUEST: 400,
+  FORBIDDENREQUEST: 403,
+  UNAUTHORIZED: 401,
+  INTERNALSERVERERROR: 500,
+  REDIRECTREQUEST: 302,
+};
+
+export default httpCodes;
