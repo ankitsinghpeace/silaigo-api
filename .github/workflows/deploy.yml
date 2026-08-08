@@ -1,3 +1,53 @@
+name: Deploy Silaigo API
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build NestJS
+        run: npm run build
+
+      - name: Prepare deployment
+        run: |
+          mkdir deployment
+          cp -r dist deployment/
+          cp package.json deployment/
+          cp package-lock.json deployment/
+
+      - name: Install production dependencies
+        working-directory: deployment
+        run: npm ci --omit=dev
+
+      - name: Create archive
+        run: tar -czf silaigo-api.tar.gz -C deployment .
+
+      - name: Upload to Lightsail
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ubuntu
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          source: "silaigo-api.tar.gz"
+          target: "/tmp"
+
       - name: Deploy
         uses: appleboy/ssh-action@v1
         with:
