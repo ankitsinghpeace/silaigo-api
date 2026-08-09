@@ -251,11 +251,14 @@ export class LandingPagesService {
       categoryName: categoryLandingConfig?.categoryName,
       longDescription: locCategory.longDescription,
       category: {
+        id: category._id,
+        categoryId: category.id,
         name: category.name,
         imageUrl: category.mImageUrl,
         label: category.label?.title,
       },
       pricingSubcategories: pricingSubcategories.map((sub) => ({
+        id: sub._id,
         name: sub.name,
         image: sub.image,
         description: sub.description,
@@ -263,6 +266,7 @@ export class LandingPagesService {
         discountedPrice: sub.discountedPrice,
       })),
       mainSubcategories: mainSubcategories.map((sub) => ({
+        id: sub._id,
         name: sub.name,
         image: sub.image,
         description: sub.description,
