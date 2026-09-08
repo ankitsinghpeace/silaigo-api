@@ -76,7 +76,7 @@ export class OrdersService {
     private readonly pickupModel: Model<IMaterialPickup>,
     private readonly appointmentsService: AppointmentsService,
     private readonly ordersEventsService: OrderEventsOptionsService,
-  ) {}
+  ) { }
 
   async getSubCategoryStyle(
     subCategoryId: mongoose.Types.ObjectId,
@@ -299,10 +299,17 @@ export class OrdersService {
       pincode: customerData.pincode,
     });
 
+    await this.pickupModel.findOneAndUpdate(
+      { _id: pickupId },
+      {
+        isOrderCreated: true
+      }
+    )
     const firstOrderItem = orderItems[0];
     const firstOrderItemRes = await this.orderModel.create({
       profile: customer._id,
       addressId: address._id,
+      pickupId: pickupId,
       items: firstOrderItem.items ? { ...firstOrderItem.items } : [],
       status: OrderStatus.PENDING,
       imageUrls: firstOrderItem.imageUrls ? firstOrderItem.imageUrls : [],
@@ -429,15 +436,15 @@ export class OrdersService {
       appointment: details.appointment || {},
       address:
         req.user.role === RoleCode.CUTTING ||
-        req.user.role === RoleCode.STITCHING
+          req.user.role === RoleCode.STITCHING
           ? null
           : {
-              ...details.addressId,
-              phone: details.profile ? (details.profile as any).phone : '',
-              name: details.profile
-                ? `${(details?.profile as any).firstName} ${(details?.profile as any).lastName}`
-                : '',
-            },
+            ...details.addressId,
+            phone: details.profile ? (details.profile as any).phone : '',
+            name: details.profile
+              ? `${(details?.profile as any).firstName} ${(details?.profile as any).lastName}`
+              : '',
+          },
       order: {
         _id: details._id,
         status: details.status,
@@ -1280,6 +1287,7 @@ export class OrdersService {
       .find({
         'options.label': 'Order fulfilled',
         'options.value': false,
+        isOrderCreated: false,
       })
       .sort({ createdAt: -1 });
   }

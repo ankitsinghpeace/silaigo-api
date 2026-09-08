@@ -11,6 +11,10 @@ export const OrderSchema = new Schema({
     ref: 'Profile',
     required: true,
   },
+  pickupId: {
+    type: Types.ObjectId,
+    ref: 'Pickup',
+  },
   items: [
     {
       subCategory: {
