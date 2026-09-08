@@ -1287,7 +1287,7 @@ export class OrdersService {
       .find({
         'options.label': 'Order fulfilled',
         'options.value': false,
-        isOrderCreated: false,
+        isOrderCreated: { $ne: true },
       })
       .sort({ createdAt: -1 });
   }
