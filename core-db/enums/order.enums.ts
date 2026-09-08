@@ -29,7 +29,11 @@ export const OrderProcessingStateTimeLineMap = {
 };
 
 export const OrderProcessingStateToUserRole = {
-  [RoleCode.PICKUP_COORDINATOR]: [OrderProcessingState.ORDER_PLACED],
+  [RoleCode.PICKUP_COORDINATOR]: [
+    OrderProcessingState.ORDER_PLACED,
+    OrderProcessingState.MATERIAL_PACKED,
+    OrderProcessingState.READY_FOR_DISPATCH,
+  ],
   [RoleCode.CUTTING]: [OrderProcessingState.ORDER_FULFILLED],
   [RoleCode.STITCHING]: [OrderProcessingState.CUTTING_END],
   [RoleCode.SUPPORT]: [
