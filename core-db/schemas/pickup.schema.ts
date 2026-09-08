@@ -12,7 +12,7 @@ const PickupOptionSchema = new Schema(
 
 export const MaterialPickupSchema = new Schema(
   {
-    isOrderCreated: { type: boolean },
+    isOrderCreated: { type: Boolean },
     addressLine1: { type: String },
     addressLine2: { type: String },
     city: { type: String },
