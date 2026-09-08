@@ -1,4 +1,3 @@
-import { boolean } from 'joi';
 import { Schema, Types } from 'mongoose';
 
 const PickupOptionSchema = new Schema(
@@ -12,7 +11,7 @@ const PickupOptionSchema = new Schema(
 
 export const MaterialPickupSchema = new Schema(
   {
-    isOrderCreated: { type: boolean },
+    isOrderCreated: { type: Boolean, default: false },
     addressLine1: { type: String },
     addressLine2: { type: String },
     city: { type: String },
