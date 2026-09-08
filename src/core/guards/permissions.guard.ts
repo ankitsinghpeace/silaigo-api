@@ -11,8 +11,14 @@ export const PermissionsGuard = (permission: string[]) => {
       const request = context.switchToHttp().getRequest();
       const user = request.user;
 
+      if (!user) return false;
 
-      return user && permission.some((perm) => user.permissions.includes(perm));
+      // Allow ADMIN or SUPPORT or users with permission string matching
+      if (user.role === 'ADMIN' || user.role === 'SUPPORT') {
+        return true;
+      }
+
+      return permission.some((perm) => user.permissions?.includes(perm));
     }
   }
 

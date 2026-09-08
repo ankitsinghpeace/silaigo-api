@@ -32,7 +32,11 @@ export const OrderProcessingStateToUserRole = {
   [RoleCode.PICKUP_COORDINATOR]: [OrderProcessingState.ORDER_PLACED],
   [RoleCode.CUTTING]: [OrderProcessingState.ORDER_FULFILLED],
   [RoleCode.STITCHING]: [OrderProcessingState.CUTTING_END],
-  [RoleCode.SUPPORT]: [OrderProcessingState.STITCHING_END],
+  [RoleCode.SUPPORT]: [
+    OrderProcessingState.STITCHING_END,
+    OrderProcessingState.PRODUCT_VERIFIED_OR_RECTIFIED,
+    OrderProcessingState.MATERIAL_PACKED,
+  ],
 };
 
 export const RoleToProfileAttributesMap = {
