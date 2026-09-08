@@ -299,12 +299,6 @@ export class OrdersService {
       pincode: customerData.pincode,
     });
 
-    await this.pickupModel.findOneAndUpdate(
-      { _id: pickupId },
-      {
-        isOrderCreated: true
-      }
-    )
     const firstOrderItem = orderItems[0];
     const firstOrderItemRes = await this.orderModel.create({
       profile: customer._id,
@@ -312,6 +306,10 @@ export class OrdersService {
       pickupId: pickupId,
       items: firstOrderItem.items ? { ...firstOrderItem.items } : [],
       status: OrderStatus.PENDING,
+      orderProcessingState:
+        orderData.orderProcessingState ||
+        firstOrderItem.orderProcessingState ||
+        OrderProcessingState.ORDER_PLACED,
       imageUrls: firstOrderItem.imageUrls ? firstOrderItem.imageUrls : [],
       timeLine: [],
       customPrice:
@@ -347,8 +345,13 @@ export class OrdersService {
       return {
         profile: customer._id,
         addressId: address._id,
+        pickupId: pickupId,
         items: item.items ? { ...item.items } : [],
         status: OrderStatus.PAYMENT_PENDING,
+        orderProcessingState:
+          orderData.orderProcessingState ||
+          item.orderProcessingState ||
+          OrderProcessingState.ORDER_PLACED,
         imageUrls: item.imageUrls ? item.imageUrls : [],
         timeLine: [],
         customPrice:
@@ -363,8 +366,17 @@ export class OrdersService {
       };
     });
 
-    await this.orderModel.insertMany(remainingOrderItems);
+    if (remainingOrderItems.length > 0) {
+      await this.orderModel.insertMany(remainingOrderItems);
+    }
+
     if (pickupId) {
+      await this.pickupModel.findOneAndUpdate(
+        { _id: pickupId },
+        {
+          isOrderCreated: true,
+        },
+      );
       const pickupOptions: { label: string; value: boolean }[] = [
         { label: 'Material Picked Up from Customer', value: true },
         { label: 'Material Delivered to Workshop', value: true },
