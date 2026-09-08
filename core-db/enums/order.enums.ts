@@ -32,6 +32,7 @@ export const OrderProcessingStateToUserRole = {
   [RoleCode.PICKUP_COORDINATOR]: [OrderProcessingState.ORDER_PLACED],
   [RoleCode.CUTTING]: [OrderProcessingState.ORDER_FULFILLED],
   [RoleCode.STITCHING]: [OrderProcessingState.CUTTING_END],
+  [RoleCode.SUPPORT]: [OrderProcessingState.STITCHING_END],
 };
 
 export const RoleToProfileAttributesMap = {
@@ -39,6 +40,7 @@ export const RoleToProfileAttributesMap = {
   [RoleCode.PICKUP_COORDINATOR]: 'firstName lastName phone email',
   [RoleCode.CUTTING]: 'firstName lastName email',
   [RoleCode.STITCHING]: 'firstName lastName email',
+  [RoleCode.SUPPORT]: 'firstName lastName phone email',
 };
 
 export enum OrderTimeLine {

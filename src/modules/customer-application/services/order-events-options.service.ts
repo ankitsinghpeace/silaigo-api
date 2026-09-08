@@ -348,6 +348,27 @@ export class OrderEventsOptionsService {
       };
     }
 
+    if (role === RoleCode.SUPPORT) {
+      const supportOrderQuery: Record<string, any> = {
+        orderProcessingState: OrderProcessingState.STITCHING_END,
+      };
+      if (hasDateFilter) {
+        supportOrderQuery['createdAt'] = dateFilter;
+      }
+
+      const assigned = await this.orderModel.countDocuments(supportOrderQuery);
+      return {
+        userId,
+        role,
+        analytics: {
+          assigned,
+          completed: 0,
+          pending: assigned,
+        },
+        dateRange: { startDate: startDate ?? null, endDate: endDate ?? null },
+      };
+    }
+
     throw new BadRequestException(
       `Analytics not supported for role: ${role}`,
     );
