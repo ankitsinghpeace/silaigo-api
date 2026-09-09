@@ -264,6 +264,7 @@ export class OrderEventsOptionsService {
       // (ORDER_FULFILLED and all states that come after it in the chain)
       const cuttingStates = [
         OrderProcessingState.ORDER_FULFILLED,
+        OrderProcessingState.RETURNED,
         OrderProcessingState.CUTTING_END,
         OrderProcessingState.STITCHING_END,
         OrderProcessingState.PRODUCT_VERIFIED_OR_RECTIFIED,

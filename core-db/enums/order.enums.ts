@@ -34,9 +34,11 @@ export const OrderProcessingStateToUserRole = {
     OrderProcessingState.ORDER_PLACED,
     OrderProcessingState.MATERIAL_PACKED,
     OrderProcessingState.READY_FOR_DISPATCH,
+  ],
+  [RoleCode.CUTTING]: [
+    OrderProcessingState.ORDER_FULFILLED,
     OrderProcessingState.RETURNED,
   ],
-  [RoleCode.CUTTING]: [OrderProcessingState.ORDER_FULFILLED],
   [RoleCode.STITCHING]: [OrderProcessingState.CUTTING_END],
   [RoleCode.SUPPORT]: [
     OrderProcessingState.STITCHING_END,
