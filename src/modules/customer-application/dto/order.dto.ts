@@ -14,7 +14,7 @@ import {
   IsNotEmpty,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { OrderStatus } from 'core-db/enums/order.enums';
+import { OrderStatus, OrderProcessingState } from 'core-db/enums';
 
 export class OrderItemDto {
   @ApiProperty({
@@ -409,4 +409,45 @@ export class UpdatePickupDto {
 export class UpdateOrderImagesDto {
   add?: string[];
   remove?: string[];
+}
+
+export class UpdateProcessingStateDto {
+  @ApiProperty({
+    description: 'Next processing state of the order',
+    example: 'RETURNED',
+  })
+  @IsString()
+  @IsNotEmpty()
+  nextState: OrderProcessingState;
+
+  @ApiProperty({
+    description: 'Alteration notes or instructions',
+    example: 'Customer requested shortening sleeves by 1 inch and fixing collar line',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  notes?: string;
+
+  @ApiProperty({
+    description: 'Alteration notes or instructions',
+    example: 'Customer requested shortening sleeves by 1 inch and fixing collar line',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  alterationNotes?: string;
+
+  @ApiProperty({
+    description: 'Array of photo URLs uploaded for alteration',
+    example: [
+      'https://silaigo-resources-dev.s3.ap-south-1.amazonaws.com/uploads/photo1.jpg',
+      'https://silaigo-resources-dev.s3.ap-south-1.amazonaws.com/uploads/photo2.jpg',
+    ],
+    required: false,
+  })
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  alterationPhotos?: string[];
 }

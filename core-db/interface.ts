@@ -170,6 +170,8 @@ export interface IOrder {
   isPinned?: boolean;
   assignedToStitchingAgentId?: string;
   paymentStatus?: 'PAID' | 'UNPAID' | 'PARTIALLY_PAID';
+  alterationNotes?: string;
+  alterationPhotos?: string[];
 }
 
 // ------------------- Page Section -------------------

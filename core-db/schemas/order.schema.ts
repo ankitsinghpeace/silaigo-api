@@ -128,4 +128,10 @@ export const OrderSchema = new Schema({
     type: String,
     enum: ['PAID', 'UNPAID', 'PARTIALLY_PAID'],
   },
+  alterationNotes: {
+    type: String,
+  },
+  alterationPhotos: {
+    type: [String],
+  },
 });

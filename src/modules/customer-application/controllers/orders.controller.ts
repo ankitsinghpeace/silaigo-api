@@ -20,6 +20,7 @@ import {
   CreateOrderDto,
   GetAllOrdersDto,
   UpdateOrderStatusDto,
+  UpdateProcessingStateDto,
   UpdatePickupDto,
 } from '../dto/order.dto';
 import {
@@ -214,13 +215,13 @@ export class OrdersController {
     PermissionsGuard([`${PermissionType.ORDER}.${PermissionSubType.EDIT}`]),
   )
   updateProcessingState(
-    @Body() body: any,
+    @Body() body: UpdateProcessingStateDto,
     @Param('id') id: string,
     @Req() req: any,
   ) {
     return this.ordersService.updateOrderProcessingState(
       id,
-      body.nextState,
+      body,
       req,
     );
   }

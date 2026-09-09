@@ -29,6 +29,7 @@ import {
   CreateOrderDto,
   GetAllOrdersDto,
   UpdatePickupDto,
+  UpdateProcessingStateDto,
 } from '../dto/order.dto';
 import {
   OrderProcessingState,
@@ -1425,15 +1426,32 @@ export class OrdersService {
 
   async updateOrderProcessingState(
     orderId: string,
-    nextState: OrderProcessingState,
+    body: UpdateProcessingStateDto | {
+      nextState: OrderProcessingState;
+      notes?: string;
+      alterationNotes?: string;
+      alterationPhotos?: string[];
+    },
     req: any,
   ) {
+    const nextState = body.nextState;
+    const updateFields: any = {
+      orderProcessingState: nextState,
+    };
+
+    const notesValue = body.notes !== undefined ? body.notes : body.alterationNotes;
+    if (notesValue !== undefined) {
+      updateFields.alterationNotes = notesValue;
+    }
+
+    if (body.alterationPhotos !== undefined) {
+      updateFields.alterationPhotos = body.alterationPhotos;
+    }
+
     return this.orderModel.findByIdAndUpdate(
       orderId,
       {
-        $set: {
-          orderProcessingState: nextState,
-        },
+        $set: updateFields,
         $push: {
           timeLine: {
             status: nextState,
