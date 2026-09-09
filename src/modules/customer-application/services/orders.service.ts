@@ -461,11 +461,16 @@ export class OrdersService {
       order: {
         _id: details._id,
         status: details.status,
+        orderProcessingState: details.orderProcessingState,
         items: details.items || [],
         imageUrls: details.imageUrls,
         createdAt: details.createdAt,
         notes: details.notes || 'N/A',
+        alterationNotes: details.alterationNotes || '',
+        alterationPhotos: details.alterationPhotos || [],
       },
+      alterationNotes: details.alterationNotes || '',
+      alterationPhotos: details.alterationPhotos || [],
       payment: details.payment || {},
       style: {
         name: style.name,
@@ -802,6 +807,8 @@ export class OrdersService {
           orderDate: order.createdAt,
           notes: order.notes || '-',
           orderProcessingState: order.orderProcessingState || 'Order Placed',
+          alterationNotes: order?.alterationNotes || '',
+          alterationPhotos: order?.alterationPhotos || [],
         };
       }
 
@@ -841,6 +848,8 @@ export class OrdersService {
         customPrice: order.customPrice || 'N/A',
         measurements: order.measurements || {},
         orderProcessingState: order.orderProcessingState || 'Order Placed',
+        alterationNotes: order?.alterationNotes || '',
+        alterationPhotos: order?.alterationPhotos || [],
         scheduledPickupDate: order?.scheduledPickupDate || null,
         scheduledPickupTime: order?.scheduledPickupTime || null,
         isPinned: order?.isPinned,
@@ -940,6 +949,8 @@ export class OrdersService {
         customPrice: order.customPrice || 'N/A',
         measurements: order.measurements || {},
         orderProcessingState: order.orderProcessingState || 'Order Placed',
+        alterationNotes: order?.alterationNotes || '',
+        alterationPhotos: order?.alterationPhotos || [],
         scheduledPickupDate: order?.scheduledPickupDate || null,
         scheduledPickupTime: order?.scheduledPickupTime || null,
         isPinned: order?.isPinned,
@@ -1439,12 +1450,15 @@ export class OrdersService {
       orderProcessingState: nextState,
     };
 
-    const notesValue = body.notes !== undefined ? body.notes : body.alterationNotes;
-    if (notesValue !== undefined) {
+    const notesValue =
+      body.alterationNotes !== undefined && body.alterationNotes !== null
+        ? body.alterationNotes
+        : body.notes;
+    if (notesValue !== undefined && notesValue !== null) {
       updateFields.alterationNotes = notesValue;
     }
 
-    if (body.alterationPhotos !== undefined) {
+    if (body.alterationPhotos !== undefined && body.alterationPhotos !== null) {
       updateFields.alterationPhotos = body.alterationPhotos;
     }
 
