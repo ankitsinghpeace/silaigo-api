@@ -192,7 +192,10 @@ export class AuthController {
 
   @Get('customers')
   @UseGuards(
-    PermissionsGuard([`${PermissionType.CUSTOMERS}.${PermissionSubType.VIEW}`]),
+    PermissionsGuard([
+      `${PermissionType.CUSTOMERS}.${PermissionSubType.VIEW}`,
+      `${PermissionType.ORDER}.${PermissionSubType.VIEW}`,
+    ]),
   )
   async getCustomersList(
     @Query(new ValidationPipe()) query: GetCustomersQueryListDto,

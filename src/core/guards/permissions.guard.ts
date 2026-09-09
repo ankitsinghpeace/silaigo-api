@@ -4,6 +4,7 @@ import {
   Injectable,
   mixin,
 } from '@nestjs/common';
+import { RoleCode } from 'core-db/enums/roles.enums';
 
 export const PermissionsGuard = (permission: string[]) => {
   class PermissionGuardMixin implements CanActivate {
@@ -13,8 +14,12 @@ export const PermissionsGuard = (permission: string[]) => {
 
       if (!user) return false;
 
-      // Allow ADMIN or SUPPORT or users with permission string matching
-      if (user.role === 'ADMIN' || user.role === 'SUPPORT') {
+      // Allow ADMIN, SUPPORT, or PICKUP_COORDINATOR or users with permission string matching
+      if (
+        user.role === RoleCode.ADMIN ||
+        user.role === RoleCode.SUPPORT ||
+        user.role === RoleCode.PICKUP_COORDINATOR
+      ) {
         return true;
       }
 
