@@ -816,14 +816,20 @@ export class OrdersService {
         order?.items[0]?.subCategory,
         order?.items[0]?.subCategoryStyleId!,
       );
-      let timeline: any = [];
-
-      if (req.user.role === RoleCode.ADMIN) {
-        timeline = await this.ordersEventsService.getAggregatedTimeLine(
-          order._id,
-        );
-        console.log(timeline);
-      }
+      const aggregatedTimeline = await this.ordersEventsService.getAggregatedTimeLine(
+        order._id,
+      );
+      const embeddedTimeline = (order.timeLine || []).map((tl) => ({
+        key: tl.status,
+        status: tl.status,
+        value: true,
+        timeStamp: tl.timeStamp,
+        updatedBy: tl.updatedBy,
+        updatedByUserId: tl.updatedByUserId?.toString(),
+      }));
+      const timeline = [...embeddedTimeline, ...(aggregatedTimeline || [])].sort(
+        (a, b) => new Date(a.timeStamp).getTime() - new Date(b.timeStamp).getTime(),
+      );
 
       return {
         orderId: order?.items?.[0]?.orderId || 'NA',
@@ -919,13 +925,20 @@ export class OrdersService {
         order?.items[0]?.subCategory,
         order?.items[0]?.subCategoryStyleId!,
       );
-      let timeline: any = [];
-
-      if (req.user.role === RoleCode.ADMIN) {
-        timeline = await this.ordersEventsService.getAggregatedTimeLine(
-          order._id,
-        );
-      }
+      const aggregatedTimeline = await this.ordersEventsService.getAggregatedTimeLine(
+        order._id,
+      );
+      const embeddedTimeline = (order.timeLine || []).map((tl) => ({
+        key: tl.status,
+        status: tl.status,
+        value: true,
+        timeStamp: tl.timeStamp,
+        updatedBy: tl.updatedBy,
+        updatedByUserId: tl.updatedByUserId?.toString(),
+      }));
+      const timeline = [...embeddedTimeline, ...(aggregatedTimeline || [])].sort(
+        (a, b) => new Date(a.timeStamp).getTime() - new Date(b.timeStamp).getTime(),
+      );
 
       return {
         orderId: order?.items?.[0]?.orderId || 'NA',

@@ -28,6 +28,7 @@ export enum OrderProcessingState {
 
 export const OrderProcessingStateTimeLineMap = {
   'Order fulfilled': OrderProcessingState.ORDER_FULFILLED,
+  'Cutting Start': OrderProcessingState.CUTTING_START,
   'Cutting End': OrderProcessingState.CUTTING_END,
   'Stitching End': OrderProcessingState.STITCHING_END,
 };
