@@ -809,6 +809,7 @@ export class OrdersService {
           orderProcessingState: order.orderProcessingState || 'Order Placed',
           alterationNotes: order?.alterationNotes || '',
           alterationPhotos: order?.alterationPhotos || [],
+          cuttingStartedAt: order.timeLine?.find((t) => t.status === 'CUTTING_START')?.timeStamp || null,
         };
       }
 
@@ -857,6 +858,7 @@ export class OrdersService {
         paymentStatus: order?.paymentStatus,
         address:
           req.user.role === RoleCode.ADMIN ? order?.addressId || 'N/A' : 'N/A',
+        cuttingStartedAt: order.timeLine?.find((t) => t.status === 'CUTTING_START')?.timeStamp || null,
       };
     });
 
@@ -955,6 +957,7 @@ export class OrdersService {
         scheduledPickupTime: order?.scheduledPickupTime || null,
         isPinned: order?.isPinned,
         pinPosition: order?.pinPosition,
+        cuttingStartedAt: order.timeLine?.find((t) => t.status === 'CUTTING_START')?.timeStamp || null,
       };
     });
 
