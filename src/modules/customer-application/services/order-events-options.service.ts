@@ -97,28 +97,12 @@ export class OrderEventsOptionsService {
 
           if (deselected.length === events.length) {
             order.orderProcessingState = OrderProcessingStateTimeLineMap[key];
-            if (order.orderProcessingState) {
-              if (!order.timeLine) order.timeLine = [];
-              order.timeLine.push({
-                status: order.orderProcessingState,
-                timeStamp: new Date(),
-                updatedBy: `${req.user.firstName} ${req.user.lastName}`,
-                updatedByUserId: req.user._id,
-              });
-            }
             console.log('updated order state to ', order.orderProcessingState);
             break;
           }
 
           if (OrderProcessingStateTimeLineMap[key]) {
             order.orderProcessingState = OrderProcessingStateTimeLineMap[key];
-            if (!order.timeLine) order.timeLine = [];
-            order.timeLine.push({
-              status: order.orderProcessingState,
-              timeStamp: new Date(),
-              updatedBy: `${req.user.firstName} ${req.user.lastName}`,
-              updatedByUserId: req.user._id,
-            });
             console.log('updated order state to ', order.orderProcessingState);
           }
         }

@@ -816,30 +816,14 @@ export class OrdersService {
         order?.items[0]?.subCategory,
         order?.items[0]?.subCategoryStyleId!,
       );
-      const aggregatedTimeline = await this.ordersEventsService.getAggregatedTimeLine(
-        order._id,
-      );
-      const embeddedTimeline = (order.timeLine || []).flatMap((tl) => [
-        {
-          key: tl.status,
-          status: tl.status,
-          value: true,
-          timeStamp: tl.timeStamp,
-          updatedBy: tl.updatedBy,
-          updatedByUserId: tl.updatedByUserId?.toString(),
-        },
-        ...(tl.status === 'CUTTING_START' || tl.status === OrderProcessingState.CUTTING_START ? [{
-          key: 'Cutting Start',
-          status: 'CUTTING_START',
-          value: true,
-          timeStamp: tl.timeStamp,
-          updatedBy: tl.updatedBy,
-          updatedByUserId: tl.updatedByUserId?.toString(),
-        }] : [])
-      ]);
-      const timeline = [...embeddedTimeline, ...(aggregatedTimeline || [])].sort(
-        (a, b) => new Date(a.timeStamp).getTime() - new Date(b.timeStamp).getTime(),
-      );
+      let timeline: any = [];
+
+      if (req.user.role === RoleCode.ADMIN) {
+        timeline = await this.ordersEventsService.getAggregatedTimeLine(
+          order._id,
+        );
+        console.log(timeline);
+      }
 
       return {
         orderId: order?.items?.[0]?.orderId || 'NA',
@@ -935,30 +919,13 @@ export class OrdersService {
         order?.items[0]?.subCategory,
         order?.items[0]?.subCategoryStyleId!,
       );
-      const aggregatedTimeline = await this.ordersEventsService.getAggregatedTimeLine(
-        order._id,
-      );
-      const embeddedTimeline = (order.timeLine || []).flatMap((tl) => [
-        {
-          key: tl.status,
-          status: tl.status,
-          value: true,
-          timeStamp: tl.timeStamp,
-          updatedBy: tl.updatedBy,
-          updatedByUserId: tl.updatedByUserId?.toString(),
-        },
-        ...(tl.status === 'CUTTING_START' || tl.status === OrderProcessingState.CUTTING_START ? [{
-          key: 'Cutting Start',
-          status: 'CUTTING_START',
-          value: true,
-          timeStamp: tl.timeStamp,
-          updatedBy: tl.updatedBy,
-          updatedByUserId: tl.updatedByUserId?.toString(),
-        }] : [])
-      ]);
-      const timeline = [...embeddedTimeline, ...(aggregatedTimeline || [])].sort(
-        (a, b) => new Date(a.timeStamp).getTime() - new Date(b.timeStamp).getTime(),
-      );
+      let timeline: any = [];
+
+      if (req.user.role === RoleCode.ADMIN) {
+        timeline = await this.ordersEventsService.getAggregatedTimeLine(
+          order._id,
+        );
+      }
 
       return {
         orderId: order?.items?.[0]?.orderId || 'NA',

@@ -156,7 +156,7 @@ export interface IOrder {
   orderId: string;
   customPrice?: number;
   timeLine?: {
-    status: OrderTimeLine | OrderProcessingState | string;
+    status: OrderTimeLine;
     timeStamp: Date;
     updatedBy: string;
     updatedByUserId: Types.ObjectId;
