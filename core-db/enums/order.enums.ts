@@ -14,6 +14,7 @@ export enum OrderProcessingState {
   ORDER_PLACED = 'ORDER_PLACED',
   MATERIAL_DELIVERED_TO_WORKSHOP = 'MATERIAL_DELIVERED_TO_WORKSHOP',
   ORDER_FULFILLED = 'ORDER_FULFILLED',
+  CUTTING_START = 'CUTTING_START',
   CUTTING_END = 'CUTTING_END',
   STITCHING_END = 'STITCHING_END',
   PRODUCT_VERIFIED_OR_RECTIFIED = 'PRODUCT_VERIFIED_OR_RECTIFIED',
@@ -21,6 +22,8 @@ export enum OrderProcessingState {
   READY_FOR_DISPATCH = 'READY_FOR_DISPATCH',
   ORDER_COMPLETE = 'ORDER_COMPLETE',
   RETURNED = 'RETURNED',
+  ALTERATION_START = 'ALTERATION_START',
+  ALTERATION_END = 'ALTERATION_END',
 }
 
 export const OrderProcessingStateTimeLineMap = {
@@ -37,7 +40,10 @@ export const OrderProcessingStateToUserRole = {
   ],
   [RoleCode.CUTTING]: [
     OrderProcessingState.ORDER_FULFILLED,
+    OrderProcessingState.CUTTING_START,
     OrderProcessingState.RETURNED,
+    OrderProcessingState.ALTERATION_START,
+    OrderProcessingState.ALTERATION_END,
   ],
   [RoleCode.STITCHING]: [OrderProcessingState.CUTTING_END],
   [RoleCode.SUPPORT]: [
