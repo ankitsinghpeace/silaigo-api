@@ -791,6 +791,10 @@ export class OrdersService {
 
     let orderList = filteredOrders.map(async (order) => {
       if (!isCustomerView) {
+        const style = await this.getSubCategoryStyle(
+          order?.items[0]?.subCategory,
+          order?.items[0]?.subCategoryStyleId!,
+        );
         return {
           orderId: order?.items?.[0]?.orderId || 'NA',
           id: order._id,
@@ -810,6 +814,8 @@ export class OrdersService {
           alterationNotes: order?.alterationNotes || '',
           alterationPhotos: order?.alterationPhotos || [],
           cuttingStartedAt: order.timeLine?.find((t) => t.status === 'CUTTING_START')?.timeStamp || null,
+          productName: style.name,
+          garmentName: style.name,
         };
       }
 
@@ -844,6 +850,7 @@ export class OrdersService {
           ? this.formatTimeSlot(order.appointment.time)
           : 'N/A',
         productName: style.name,
+        garmentName: style.name,
         productPrice: order.payment?.discountedAmount || 'N/A',
         timeLine: timeline || [],
         customPrice: order.customPrice || 'N/A',
@@ -946,6 +953,7 @@ export class OrdersService {
           ? this.formatTimeSlot(order.appointment.time)
           : 'N/A',
         productName: style.name,
+        garmentName: style.name,
         productPrice: order.payment?.discountedAmount || 'N/A',
         timeLine: timeline || [],
         customPrice: order.customPrice || 'N/A',
