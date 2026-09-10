@@ -814,6 +814,7 @@ export class OrdersService {
           alterationNotes: order?.alterationNotes || '',
           alterationPhotos: order?.alterationPhotos || [],
           cuttingStartedAt: order.timeLine?.find((t) => t.status === 'CUTTING_START')?.timeStamp || null,
+          cuttingEndedAt: order.timeLine?.find((t) => t.status === 'CUTTING_END')?.timeStamp || null,
           productName: style.name,
           garmentName: style.name,
         };
@@ -866,6 +867,7 @@ export class OrdersService {
         address:
           req.user.role === RoleCode.ADMIN ? order?.addressId || 'N/A' : 'N/A',
         cuttingStartedAt: order.timeLine?.find((t) => t.status === 'CUTTING_START')?.timeStamp || null,
+        cuttingEndedAt: order.timeLine?.find((t) => t.status === 'CUTTING_END')?.timeStamp || null,
       };
     });
 
@@ -966,6 +968,7 @@ export class OrdersService {
         isPinned: order?.isPinned,
         pinPosition: order?.pinPosition,
         cuttingStartedAt: order.timeLine?.find((t) => t.status === 'CUTTING_START')?.timeStamp || null,
+        cuttingEndedAt: order.timeLine?.find((t) => t.status === 'CUTTING_END')?.timeStamp || null,
       };
     });
 
