@@ -41,6 +41,7 @@ export const OrderProcessingStateToUserRole = {
   [RoleCode.CUTTING]: [
     OrderProcessingState.ORDER_FULFILLED,
     OrderProcessingState.CUTTING_START,
+    OrderProcessingState.CUTTING_END,
     OrderProcessingState.RETURNED,
     OrderProcessingState.ALTERATION_START,
     OrderProcessingState.ALTERATION_END,
