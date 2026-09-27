@@ -16,7 +16,6 @@ export const MaterialPickupSchema = new Schema(
       type: Boolean,
       default: false,
     },
-    isOrderCreated: { type: Boolean },
     addressLine1: { type: String },
     addressLine2: { type: String },
     city: { type: String },
