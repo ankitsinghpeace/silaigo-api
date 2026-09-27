@@ -910,7 +910,7 @@ export class OrdersService {
     const hasPrevPage = currentPage > 1;
 
     const pinnedOrders: any = await this.orderModel
-      .find({ isPinned: true, isArchived: true })
+      .find({ isPinned: true, isArchived: false })
       .populate({
         path: 'profile',
         select: RoleToProfileAttributesMap[req.user.role],
@@ -1326,7 +1326,7 @@ export class OrdersService {
         'options.label': 'Order fulfilled',
         'options.value': false,
         isOrderCreated: { $ne: true },
-        isArchived: true,
+        isArchived: false,
       })
       .sort({ createdAt: -1 });
   }
