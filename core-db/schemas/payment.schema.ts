@@ -18,6 +18,10 @@ export const PaymentSchema = new Schema({
     ref: 'PaymentMethod',
     // required: true,
   },
+  isArchived: {
+    type: Boolean,
+    default: false,
+  },
   method: {
     type: String,
     enum: Object.values(PaymentMethodType),

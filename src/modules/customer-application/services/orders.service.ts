@@ -541,7 +541,7 @@ export class OrdersService {
     const pageLimit = Math.min(Number(limit), 20);
     const currentPage = Math.max(1, Number(page));
     const skip = (currentPage - 1) * pageLimit;
-    let query: any = { profile: req.user._id };
+    let query: any = { profile: req.user._id, isArchived: false };
 
     let total: number = await this.orderModel.countDocuments(query);
 
@@ -667,7 +667,7 @@ export class OrdersService {
     const isCustomerView =
       filters.customerPhone || filters.customerName || filters.customerId;
 
-    let query: any = {};
+    let query: any = { isArchived: true };
     if (req.user.role !== RoleCode.ADMIN && all_orders === '0') {
       const allowedStates = OrderProcessingStateToUserRole[req.user.role];
       query['orderProcessingState'] = { $in: allowedStates };
@@ -910,7 +910,7 @@ export class OrdersService {
     const hasPrevPage = currentPage > 1;
 
     const pinnedOrders: any = await this.orderModel
-      .find({ isPinned: true })
+      .find({ isPinned: true, isArchived: true })
       .populate({
         path: 'profile',
         select: RoleToProfileAttributesMap[req.user.role],
@@ -1326,6 +1326,7 @@ export class OrdersService {
         'options.label': 'Order fulfilled',
         'options.value': false,
         isOrderCreated: { $ne: true },
+        isArchived: true,
       })
       .sort({ createdAt: -1 });
   }

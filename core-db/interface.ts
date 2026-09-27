@@ -172,6 +172,7 @@ export interface IOrder {
   paymentStatus?: 'PAID' | 'UNPAID' | 'PARTIALLY_PAID';
   alterationNotes?: string;
   alterationPhotos?: string[];
+  isArchived?:boolean;
 }
 
 // ------------------- Page Section -------------------
@@ -403,6 +404,7 @@ export interface IMaterialPickup {
     updatedBy?: string;
     updatedByUserId?: Types.ObjectId;
   }[];
+  isArchived?:boolean;
 }
 
 export interface ILocation {

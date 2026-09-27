@@ -134,4 +134,9 @@ export const OrderSchema = new Schema({
   alterationPhotos: {
     type: [String],
   },
+  isArchived: {
+    type: Boolean,
+    default: false,
+  },
+
 });

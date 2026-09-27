@@ -20,7 +20,10 @@ export interface IProfile {
 export const ProfileSchema = new Schema({
   firstName: { type: String, required: true },
   lastName: { type: String },
-
+  isArchived: {
+    type: Boolean,
+    default: false,
+  },
   gender: {
     type: String,
     enum: Object.values(Gender),

@@ -14,4 +14,8 @@ export const ScheduleSchema = new Schema({
   maxAppointmentsPerSlot: { type: Number, default: 2 },
   isActive: { type: Boolean, default: true },
   createdAt: { type: Date, default: Date.now },
+  isArchived: {
+    type: Boolean,
+    default: false,
+  },
 });

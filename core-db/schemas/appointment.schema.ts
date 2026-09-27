@@ -6,7 +6,10 @@ export const AppointmentSchema = new Schema({
 
   date: { type: Date, required: true },
   time: { type: String, required: true }, // "11:00"
-
+  isArchived: {
+    type: Boolean,
+    default: false,
+  },
   status: {
     type: String,
     enum: ['BOOKED', 'CANCELLED'],
