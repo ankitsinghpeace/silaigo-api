@@ -667,7 +667,7 @@ export class OrdersService {
     const isCustomerView =
       filters.customerPhone || filters.customerName || filters.customerId;
 
-    let query: any = { isArchived: true };
+    let query: any = { isArchived: false };
     if (req.user.role !== RoleCode.ADMIN && all_orders === '0') {
       const allowedStates = OrderProcessingStateToUserRole[req.user.role];
       query['orderProcessingState'] = { $in: allowedStates };
