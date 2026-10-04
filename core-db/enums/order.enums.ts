@@ -50,7 +50,7 @@ export const OrderProcessingStateToUserRole = {
     OrderProcessingState.ALTERATION_START,
     OrderProcessingState.ALTERATION_END,
   ],
-  [RoleCode.STITCHING]: [OrderProcessingState.CUTTING_END,  OrderProcessingState.STITCHING_START,OrderProcessingState.STITCHING_END,],
+  [RoleCode.STITCHING]: [OrderProcessingState.CUTTING_END,  OrderProcessingState.STITCHING_START],
   [RoleCode.SUPPORT]: [
     OrderProcessingState.STITCHING_END,
     OrderProcessingState.PRODUCT_VERIFIED_OR_RECTIFIED,
