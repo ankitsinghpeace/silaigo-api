@@ -462,6 +462,7 @@ export class OrdersService {
         _id: details._id,
         status: details.status,
         orderProcessingState: details.orderProcessingState,
+        assignedToStitchingAgentId: details.assignedToStitchingAgentId || null,
         items: details.items || [],
         imageUrls: details.imageUrls,
         createdAt: details.createdAt,
