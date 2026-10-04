@@ -77,7 +77,7 @@ export class OrdersService {
     private readonly pickupModel: Model<IMaterialPickup>,
     private readonly appointmentsService: AppointmentsService,
     private readonly ordersEventsService: OrderEventsOptionsService,
-  ) { }
+  ) {}
 
   async getSubCategoryStyle(
     subCategoryId: mongoose.Types.ObjectId,
@@ -449,15 +449,15 @@ export class OrdersService {
       appointment: details.appointment || {},
       address:
         req.user.role === RoleCode.CUTTING ||
-          req.user.role === RoleCode.STITCHING
+        req.user.role === RoleCode.STITCHING
           ? null
           : {
-            ...details.addressId,
-            phone: details.profile ? (details.profile as any).phone : '',
-            name: details.profile
-              ? `${(details?.profile as any).firstName} ${(details?.profile as any).lastName}`
-              : '',
-          },
+              ...details.addressId,
+              phone: details.profile ? (details.profile as any).phone : '',
+              name: details.profile
+                ? `${(details?.profile as any).firstName} ${(details?.profile as any).lastName}`
+                : '',
+            },
       order: {
         _id: details._id,
         status: details.status,
@@ -791,84 +791,49 @@ export class OrdersService {
     }
 
     let orderList = filteredOrders.map(async (order) => {
-      if (!isCustomerView) {
-        const style = await this.getSubCategoryStyle(
-          order?.items[0]?.subCategory,
-          order?.items[0]?.subCategoryStyleId!,
-        );
-        return {
-          orderId: order?.items?.[0]?.orderId || 'NA',
-          id: order._id,
-          customerName: order.profile
-            ? `${order.profile.firstName || ''} ${order.profile.lastName || ''}`.trim()
-            : 'N/A',
-          customerId: order.profile?._id || 'N/A',
-          appointmentDate: order.appointment?.date
-            ? order.appointment.date
-            : 'N/A',
-          appointmentTime: order.appointment?.time
-            ? this.formatTimeSlot(order.appointment.time)
-            : 'N/A',
-          orderDate: order.createdAt,
-          notes: order.notes || '-',
-          orderProcessingState: order.orderProcessingState || 'Order Placed',
-          alterationNotes: order?.alterationNotes || '',
-          alterationPhotos: order?.alterationPhotos || [],
-          cuttingStartedAt: order.timeLine?.find((t) => t.status === 'CUTTING_START')?.timeStamp || null,
-          cuttingEndedAt: order.timeLine?.find((t) => t.status === 'CUTTING_END')?.timeStamp || null,
-          productName: style.name,
-          garmentName: style.name,
-        };
-      }
-
       const style = await this.getSubCategoryStyle(
-        order?.items[0]?.subCategory,
-        order?.items[0]?.subCategoryStyleId!,
+        order?.items?.[0]?.subCategory,
+        order?.items?.[0]?.subCategoryStyleId!,
       );
+
       let timeline: any = [];
 
       if (req.user.role === RoleCode.ADMIN) {
         timeline = await this.ordersEventsService.getAggregatedTimeLine(
           order._id,
         );
-        console.log(timeline);
       }
 
       return {
+        ...order,
+        profile: order.profile,
+        payment: order.payment,
+        appointment: order.appointment,
+        addressId:
+          req.user.role === RoleCode.ADMIN ? order.addressId : undefined,
         orderId: order?.items?.[0]?.orderId || 'NA',
         id: order._id,
-        assignedToStitchingAgentId: order?.assignedToStitchingAgentId || 'none',
-        orderDate: order.createdAt,
-        orderStatus: order.status,
         customerName: order.profile
-          ? `${order.profile.firstName || ''} ${order.profile.lastName || ''}`.trim()
+          ? `${order.profile.firstName || ''} ${
+              order.profile.lastName || ''
+            }`.trim()
           : 'N/A',
         customerPhone: order.profile?.phone || 'N/A',
         customerId: order.profile?._id || 'N/A',
-        appointmentDate: order.appointment?.date
-          ? order.appointment.date
-          : 'N/A',
+        appointmentDate: order.appointment?.date || 'N/A',
         appointmentTime: order.appointment?.time
           ? this.formatTimeSlot(order.appointment.time)
           : 'N/A',
-        productName: style.name,
-        garmentName: style.name,
-        productPrice: order.payment?.discountedAmount || 'N/A',
-        timeLine: timeline || [],
-        customPrice: order.customPrice || 'N/A',
-        measurements: order.measurements || {},
-        orderProcessingState: order.orderProcessingState || 'Order Placed',
-        alterationNotes: order?.alterationNotes || '',
-        alterationPhotos: order?.alterationPhotos || [],
-        scheduledPickupDate: order?.scheduledPickupDate || null,
-        scheduledPickupTime: order?.scheduledPickupTime || null,
-        isPinned: order?.isPinned,
-        pinPosition: order?.pinPosition,
-        paymentStatus: order?.paymentStatus,
-        address:
-          req.user.role === RoleCode.ADMIN ? order?.addressId || 'N/A' : 'N/A',
-        cuttingStartedAt: order.timeLine?.find((t) => t.status === 'CUTTING_START')?.timeStamp || null,
-        cuttingEndedAt: order.timeLine?.find((t) => t.status === 'CUTTING_END')?.timeStamp || null,
+        productName: style?.name || 'N/A',
+        garmentName: style?.name || 'N/A',
+        productPrice: order.payment?.discountedAmount ?? 'N/A',
+        timeLine: timeline,
+        cuttingStartedAt:
+          order.timeLine?.find((t) => t.status === 'CUTTING_START')
+            ?.timeStamp || null,
+        cuttingEndedAt:
+          order.timeLine?.find((t) => t.status === 'CUTTING_END')?.timeStamp ||
+          null,
       };
     });
 
@@ -968,8 +933,12 @@ export class OrdersService {
         scheduledPickupTime: order?.scheduledPickupTime || null,
         isPinned: order?.isPinned,
         pinPosition: order?.pinPosition,
-        cuttingStartedAt: order.timeLine?.find((t) => t.status === 'CUTTING_START')?.timeStamp || null,
-        cuttingEndedAt: order.timeLine?.find((t) => t.status === 'CUTTING_END')?.timeStamp || null,
+        cuttingStartedAt:
+          order.timeLine?.find((t) => t.status === 'CUTTING_START')
+            ?.timeStamp || null,
+        cuttingEndedAt:
+          order.timeLine?.find((t) => t.status === 'CUTTING_END')?.timeStamp ||
+          null,
       };
     });
 
@@ -1453,12 +1422,14 @@ export class OrdersService {
 
   async updateOrderProcessingState(
     orderId: string,
-    body: UpdateProcessingStateDto | {
-      nextState: OrderProcessingState;
-      notes?: string;
-      alterationNotes?: string;
-      alterationPhotos?: string[];
-    },
+    body:
+      | UpdateProcessingStateDto
+      | {
+          nextState: OrderProcessingState;
+          notes?: string;
+          alterationNotes?: string;
+          alterationPhotos?: string[];
+        },
     req: any,
   ) {
     const nextState = body.nextState;
